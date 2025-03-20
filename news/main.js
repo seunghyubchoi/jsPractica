@@ -84,13 +84,13 @@ const errorRender = (errorMessage) => {
  
 
 const paginationRender = () => {
-    // totalResult
+    // totalResult = dataSize
 
-    // page
+    // page = default:1
 
-    // pageSize
+    // pageSize = 10
     
-    // groupSize
+    // groupSize = 5
 
     // totalPages
     // 마지막 페이지그룹이 그룹 사이즈보다 작을 때
