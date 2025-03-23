@@ -106,9 +106,13 @@ const paginationRender = () => {
     // firstPage
     const firstPage = lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1);
 
-    let paginationHTML = `<li class="page-item" onclick="moveToPage(${page-1})"><a class="page-link" href="#">Previous</a></li>`;
-
+    let paginationHTML = "";
+    let flag = true;
     for(let i = firstPage; i <= lastPage; i++) {
+        if(i !== 1 && flag) {
+            paginationHTML += `<li class="page-item" onclick="moveToPage(${page-1})"><a class="page-link" href="#">Previous</a></li>`;
+            flag = false;
+        }
         paginationHTML += `<li class="page-item ${i === page ? "active" : ""}"  onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`
     }
     paginationHTML += `<li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link" href="#">Next</a></li>`
