@@ -17,17 +17,19 @@ const getNews = async () => {
         url.searchParams.set("pageSize", pageSize);
 
         const response = await fetch(url);
-        ;
+        
         const data = await response.json();
-        console.log(data);
+        
         if(response.status === 200) {
-            
+
             if(data.articles.length === 0) {
                 throw new Error("No result for this search");
             }
 
             newsList = data.articles;
+
             totalResult = data.totalResults;
+
             render();
             paginationRender();
         } else {
@@ -80,6 +82,7 @@ const errorRender = (errorMessage) => {
         ${errorMessage}
     </div>`;
     document.getElementById("news-board").innerHTML = errorHTML;
+    document.querySelector(".pagination").innerHTML = "";
 }
  
 
@@ -105,17 +108,26 @@ const paginationRender = () => {
     }
     // firstPage
     const firstPage = lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1);
-
+    
     let paginationHTML = "";
-    let flag = true;
+    let previousFlag = true;
+
+    if(page >= 2 && previousFlag) {
+        paginationHTML += `<li class="page-item" onclick="moveToPage(${firstPage})"><a class="page-link" href="#"><<</a></li>`;
+        paginationHTML += `<li class="page-item" onclick="moveToPage(${page-1})"><a class="page-link" href="#"><</a></li>`;
+        previousFlag = false;
+    }
+    
     for(let i = firstPage; i <= lastPage; i++) {
-        if(i !== 1 && flag) {
-            paginationHTML += `<li class="page-item" onclick="moveToPage(${page-1})"><a class="page-link" href="#">Previous</a></li>`;
-            flag = false;
-        }
+
         paginationHTML += `<li class="page-item ${i === page ? "active" : ""}"  onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`
     }
-    paginationHTML += `<li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link" href="#">Next</a></li>`
+
+    if(page !== lastPage) {
+        paginationHTML += `<li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link" href="#">></a></li>`
+        paginationHTML += `<li class="page-item" onclick="moveToPage(${lastPage})"><a class="page-link" href="#">>></a></li>`
+    }
+    
     document.querySelector(".pagination").innerHTML = paginationHTML;
 }
 
